@@ -1,3 +1,5 @@
+const ExtractTextPlugin = require('extract-text-webpack-plugin');
+
 const path = require('path');
 
 const HtmlWebpackPlugin = require('html-webpack-plugin');
@@ -13,30 +15,36 @@ module.exports = {
         path: path.resolve('dist'),
         filename: 'index_bundle.js'
     },
+    devtool: 'source-map',
     module: {
-        loaders: [
+        loaders:
+        [
             {
-                test: /\.js$/, loader: 'babel-loader', exclude: /node_modules/
+                
+                test: /\.js$/,
+                loaders: ['babel-loader'],
+                exclude: /node_modules/
             },
             {
-                test: /\.jsx$/, loader: 'babel-loader', exclude: /node_modules/
+                test: /\.jsx$/,
+                loaders: ['babel-loader'],
+                exclude: /node_modules/
             },
             {
-                use: [{
-                    loader: "style-loader"
-                },
-                {
-                    loader: "css-loader", options: {
-                        sourceMap: true
-                    }
-                },
-                {
-                    loader: "sass-loader", options: {
-                        sourceMap: true
-                    }
-                }]
-            }         
+                test: /\.scss$/,
+                // loaders: ['style', 'css?sourceMap', 'sass?sourceMap']
+                loader: ExtractTextPlugin.extract(
+                    'style',
+                    'css?sourceMap!sass?sourceMap'
+                )
+            }
         ]
     },
-    plugins: [HtmlWebpackPluginConfig]
+    output: {
+        filename: 'public/[name].js'
+    },
+    sassLoader:{
+        includePaths: ['src/sass']
+    },
+    plugins: [HtmlWebpackPluginConfig]        
 }
