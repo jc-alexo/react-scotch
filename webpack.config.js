@@ -30,39 +30,35 @@ module.exports = {
                 loaders: ['babel-loader'],
                 exclude: /node_modules/
             },
+            // {
+            //     test: /\.scss$/,
+            //     // loaders: ['style', 'css?sourceMap', 'sass?sourceMap']
+            //     loaders: ['style-loader', 'css-loader', 'sass-loader'],
+            //     loader: ExtractTextPlugin.extract(
+            //         'style',
+            //         'css?sourceMap!sass?sourceMap'
+            //     )
+            // }
+            {
+                test: /\.css$/,
+                loader: ExtractTextPlugin.extract({
+                    loader: 'css-loader?importLoaders=1',
+                }),            
+
+            },
             {
                 test: /\.scss$/,
-                // loaders: ['style', 'css?sourceMap', 'sass?sourceMap']
-                loaders: ['style-loader', 'css-loader', 'sass-loader'],
-                loader: ExtractTextPlugin.extract(
-                    'style',
-                    'css?sourceMap!sass?sourceMap'
-                )
+                loader: ExtractTextPlugin.extract(['css-loader'], ['sass-loader'])
             }
-            // {
-            //     test: /\.css$/,
-            //     loader: ExtractTextPlugin.extract({
-            //         loader: 'css-loader?importLoaders=1',
-            //     }),            
-
-            // },
-            // {
-            //     test: /\.(sass|scss)$/,
-            //     loader: ExtractTextPlugin.extract(['css-loader'], ['sass-loader'])
-            // }
         ]
     },
-    output: {
-        filename: 'public/[name].js'
-    },
-    sassLoader:{
-        includePaths: ['src/sass']
-    },
-    plugins: //[HtmlWebpackPluginConfig],
-    [//new ExtractTextPlugin({
-    //    filename: 'dist/[name].bundle.css',
-    //    allChunks: true, 
-    // }),
-    HtmlWebpackPluginConfig
-],
+    // output: {
+    //     filename: 'src/index.js'
+    // },
+    plugins: [ //[HtmlWebpackPluginConfig],
+    new ExtractTextPlugin({
+       filename: 'dist/main.bundle.css',
+       allChunks: true, 
+    }),
+    ]
 };
